@@ -1,3 +1,5 @@
+import React from 'react';
+
 export function VPutiSection() {
   return (
     <section id="vputi" className="py-32 border-t border-[#1a1a1a]">
