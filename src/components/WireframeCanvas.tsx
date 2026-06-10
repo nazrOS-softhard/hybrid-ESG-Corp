@@ -14,9 +14,9 @@ export function WireframeCanvas() {
     let animId: number
     let time = 0
 
-    const COLS = 32
-    const ROWS = 20
-    const FOV = 500
+    const COLS = 40
+    const ROWS = 25
+    const FOV = 800 // Увеличили для более плоской, "технической" перспективы
 
     function resize() {
       canvas!.width = window.innerWidth
@@ -25,32 +25,28 @@ export function WireframeCanvas() {
     resize()
     window.addEventListener('resize', resize)
 
-    // Высота точки сетки — многослойные синусоиды
+    // Упрощенная функция высоты для более стабильной "цифровой" сетки
     function height(xi: number, zi: number, t: number): number {
       const nx = xi / COLS
       const nz = zi / ROWS
       return (
-        Math.sin(nx * Math.PI * 2.1 + t * 0.5) * 45 +
-        Math.sin(nz * Math.PI * 1.8 + t * 0.35) * 35 +
-        Math.sin((nx + nz) * Math.PI * 1.4 + t * 0.6) * 20 +
-        Math.sin(nx * Math.PI * 4.2 - t * 0.8) * 12 +
-        Math.sin(nz * Math.PI * 3.1 + t * 0.45) * 8
+        Math.sin(nx * 4 + t * 0.5) * 15 +
+        Math.cos(nz * 3 + t * 0.3) * 10
       )
     }
 
-    // 3D → 2D проекция с перспективой
     function project(wx: number, wy: number, wz: number) {
       const W = canvas!.width
       const H = canvas!.height
-      const camDist = ROWS * 1.15
+      const camDist = ROWS * 1.2
       const dz = camDist - wz
       if (dz < 0.1) return null
       const scale = FOV / dz
       return {
         x: W * 0.5 + wx * scale,
-        y: H * 0.58 - wy * scale,
+        y: H * 0.35 - wy * scale, // Сдвинули камеру выше
         scale,
-        depth: wz / ROWS, // 0 (far) → 1 (near)
+        depth: wz / ROWS,
       }
     }
 
@@ -58,92 +54,57 @@ export function WireframeCanvas() {
       const W = canvas!.width
       const H = canvas!.height
       ctx!.clearRect(0, 0, W, H)
-      time += 0.007
+      time += 0.005
 
-      // Кэшируем спроецированные точки
-      const pts: ({ x: number; y: number; scale: number; depth: number; wy: number } | null)[][] = []
+      const pts: ({ x: number; y: number; wy: number } | null)[][] = []
       for (let zi = 0; zi <= ROWS; zi++) {
         pts[zi] = []
         for (let xi = 0; xi <= COLS; xi++) {
-          const wx = (xi / COLS - 0.5) * W * 0.92
+          const wx = (xi / COLS - 0.5) * W * 1.2
           const wy = height(xi, zi, time)
-          pts[zi][xi] = project(wx, wy, zi) ? { ...project(wx, wy, zi)!, wy } : null
+          pts[zi][xi] = project(wx, wy, zi)
         }
       }
 
-      // Линии вдоль Z (колонки)
-      for (let xi = 0; xi <= COLS; xi++) {
-        ctx!.beginPath()
-        let started = false
-        for (let zi = 0; zi <= ROWS; zi++) {
-          const p = pts[zi][xi]
-          if (!p) continue
-          const alpha = 0.04 + p.depth * 0.2
-          if (!started) {
-            ctx!.moveTo(p.x, p.y)
-            started = true
-          } else {
-            ctx!.lineTo(p.x, p.y)
-          }
-        }
-        ctx!.strokeStyle = 'rgba(200,220,220,0.15)'
-        ctx!.lineWidth = 0.5
-        ctx!.stroke()
-      }
+      // Настройка цвета бренда: #00D4B4
+      const strokeStyle = 'rgba(0, 212, 180, 0.3)'
+      ctx!.strokeStyle = strokeStyle
+      ctx!.lineWidth = 0.5
 
-      // Линии вдоль X (ряды) — с переменной прозрачностью по глубине
+      // Отрисовка сетки
       for (let zi = 0; zi <= ROWS; zi++) {
         ctx!.beginPath()
-        let started = false
         for (let xi = 0; xi <= COLS; xi++) {
           const p = pts[zi][xi]
           if (!p) continue
-          if (!started) {
-            ctx!.moveTo(p.x, p.y)
-            started = true
-          } else {
-            ctx!.lineTo(p.x, p.y)
-          }
+          if (xi === 0) ctx!.moveTo(p.x, p.y)
+          else ctx!.lineTo(p.x, p.y)
         }
-        const depth = zi / ROWS
-        const alpha = 0.05 + depth * 0.25
-        ctx!.strokeStyle = `rgba(220,240,238,${alpha})`
-        ctx!.lineWidth = 0.5 + depth * 0.4
         ctx!.stroke()
       }
 
-      // Узловые точки на пиках — бирюзовое свечение
-      for (let zi = 1; zi < ROWS; zi += 2) {
-        for (let xi = 1; xi < COLS; xi += 2) {
+      for (let xi = 0; xi <= COLS; xi++) {
+        ctx!.beginPath()
+        for (let zi = 0; zi <= ROWS; zi++) {
           const p = pts[zi][xi]
           if (!p) continue
-          const intensity = Math.max(0, (p.wy - 28) / 50)
-          if (intensity < 0.01) continue
+          if (zi === 0) ctx!.moveTo(p.x, p.y)
+          else ctx!.lineTo(p.x, p.y)
+        }
+        ctx!.stroke()
+      }
 
-          // Внешнее свечение
-          const grd = ctx!.createRadialGradient(p.x, p.y, 0, p.x, p.y, 6 * intensity + 2)
-          grd.addColorStop(0, `rgba(0,212,180,${intensity * 0.9})`)
-          grd.addColorStop(1, 'rgba(0,212,180,0)')
-          ctx!.beginPath()
-          ctx!.arc(p.x, p.y, 6 * intensity + 2, 0, Math.PI * 2)
-          ctx!.fillStyle = grd
-          ctx!.fill()
-
-          // Центральная точка
+      // Точки узлов (акценты)
+      ctx!.fillStyle = '#00D4B4'
+      for (let zi = 0; zi <= ROWS; zi += 3) {
+        for (let xi = 0; xi <= COLS; xi += 3) {
+          const p = pts[zi][xi]
+          if (!p) continue
           ctx!.beginPath()
           ctx!.arc(p.x, p.y, 1.2, 0, Math.PI * 2)
-          ctx!.fillStyle = `rgba(0,212,180,${Math.min(1, intensity * 1.5)})`
           ctx!.fill()
         }
       }
-
-      // Горизонтальный туман снизу — плавный переход к контенту
-      const fog = ctx!.createLinearGradient(0, H * 0.5, 0, H)
-      fog.addColorStop(0, 'rgba(8,8,8,0)')
-      fog.addColorStop(0.6, 'rgba(8,8,8,0.5)')
-      fog.addColorStop(1, 'rgba(8,8,8,1)')
-      ctx!.fillStyle = fog
-      ctx!.fillRect(0, 0, W, H)
 
       animId = requestAnimationFrame(draw)
     }
@@ -167,6 +128,7 @@ export function WireframeCanvas() {
         height: '100%',
         zIndex: 0,
         pointerEvents: 'none',
+        background: '#080808', // Цвет фона из вашего дизайна
       }}
     />
   )
