@@ -1,11 +1,13 @@
 'use client'
 
-import React from 'react'
-
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
 
-const links = ['Products', 'Divisions', 'Mission', 'В Пути']
+const links = [
+  { label: 'Products', href: '#products' },
+  { label: 'Divisions', href: '#divisions' },
+  { label: 'Mission', href: '#mission' },
+  { label: 'В Пути', href: '#vputi' },
+]
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false)
@@ -26,36 +28,47 @@ export function Nav() {
       }}
     >
       <div className="max-w-6xl mx-auto px-8 h-16 flex items-center justify-between">
-        {/* Logo */}
         <div className="flex items-center gap-3">
           <div
-            className="w-7 h-7 rounded flex items-center justify-center font-semibold text-black text-sm"
-            style={{ background: '#00D4B4' }}
+            className="w-7 h-7 rounded flex items-center justify-center font-semibold text-sm"
+            style={{ background: '#00D4B4', color: '#000' }}
           >
             H
           </div>
-          <span className="text-white font-light tracking-widest2 text-sm uppercase">Hybrid Inc.</span>
+          <span className="text-white font-light text-sm uppercase tracking-widest">
+            Hybrid Inc.
+          </span>
         </div>
 
-        {/* Links */}
         <div className="hidden md:flex items-center gap-8">
           {links.map((l) => (
             
-              key={l}
-              href={l === 'В Пути' ? '#vputi' : `#${l.toLowerCase()}`}
-              className="text-[#707070] hover:text-white text-xs tracking-widest uppercase transition-colors"
+              key={l.label}
+              href={l.href}
+              className="text-xs uppercase tracking-widest transition-colors"
+              style={{ color: '#707070' }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#fff')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = '#707070')}
             >
-              {l}
+              {l.label}
             </a>
           ))}
         </div>
 
-        {/* CTA */}
         
           href="https://hybrid-away.vercel.app"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-xs px-4 py-2 rounded border border-[#00D4B4] text-[#00D4B4] hover:bg-[#00D4B4] hover:text-black transition-all duration-200 tracking-wider uppercase"
+          className="text-xs px-4 py-2 rounded uppercase tracking-wider transition-all duration-200"
+          style={{ border: '1px solid #00D4B4', color: '#00D4B4' }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = '#00D4B4'
+            e.currentTarget.style.color = '#000'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'transparent'
+            e.currentTarget.style.color = '#00D4B4'
+          }}
         >
           В Пути →
         </a>
