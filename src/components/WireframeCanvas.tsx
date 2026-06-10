@@ -56,15 +56,22 @@ export function WireframeCanvas() {
       ctx!.clearRect(0, 0, W, H)
       time += 0.005
 
-      const pts: ({ x: number; y: number; wy: number } | null)[][] = []
-      for (let zi = 0; zi <= ROWS; zi++) {
-        pts[zi] = []
-        for (let xi = 0; xi <= COLS; xi++) {
-          const wx = (xi / COLS - 0.5) * W * 1.2
-          const wy = height(xi, zi, time)
-          pts[zi][xi] = project(wx, wy, zi)
-        }
-      }
+    // 1. Обновляем тип данных, которые мы храним в pts
+const pts: ({ x: number; y: number; wy: number } | null)[][] = []
+
+for (let zi = 0; zi <= ROWS; zi++) {
+  pts[zi] = []
+  for (let xi = 0; xi <= COLS; xi++) {
+    const wx = (xi / COLS - 0.5) * W * 1.2
+    const wy = height(xi, zi, time)
+    
+    // 2. Получаем результат проекции
+    const projected = project(wx, wy, zi)
+    
+    // 3. Сохраняем объект, включая wy (высоту), чтобы TypeScript был доволен
+    pts[zi][xi] = projected ? { x: projected.x, y: projected.y, wy: wy } : null
+  }
+}
 
       // Настройка цвета бренда: #00D4B4
       const strokeStyle = 'rgba(0, 212, 180, 0.3)'
