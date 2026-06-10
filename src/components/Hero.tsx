@@ -1,3 +1,5 @@
+import React from 'react';
+
 export function Hero() {
   return (
     <section className="relative h-screen flex flex-col items-center justify-center text-center px-8">
