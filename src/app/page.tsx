@@ -7,13 +7,13 @@ import hybridLogo from '@/assets/hybrid-logo.svg'
 
 // ← ИМПОРТЫ ФОТО ПРОДУКТОВ
 import p01 from '@/assets/products/01.jpg'
-import p02 from '@/assets/products/02.jpg'
-import p03 from '@/assets/products/03.jpg'
-import p04 from '@/assets/products/04.jpg'
-import p05 from '@/assets/products/05.jpg'
-import p06 from '@/assets/products/06.jpg'
-import p07 from '@/assets/products/07.jpg'
-import p08 from '@/assets/products/08.jpg'
+// import p02 from '@/assets/products/02.jpg'
+// import p03 from '@/assets/products/03.jpg'
+// import p04 from '@/assets/products/04.jpg'
+// import p05 from '@/assets/products/05.jpg'
+// import p06 from '@/assets/products/06.jpg'
+// import p07 from '@/assets/products/07.jpg'
+// import p08 from '@/assets/products/08.jpg'
 
 type Lang = 'ru' | 'en' | 'zh'
 
