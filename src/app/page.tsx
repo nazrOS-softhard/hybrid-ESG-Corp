@@ -5,6 +5,16 @@ import { WireframeWithVideoBackground } from '@/components/WireframeCanvas'
 import Image from 'next/image'
 import hybridLogo from '@/assets/hybrid-logo.svg'
 
+// ← ИМПОРТЫ ФОТО ПРОДУКТОВ
+import p01 from '@/assets/products/01.jpg'
+import p02 from '@/assets/products/02.jpg'
+import p03 from '@/assets/products/03.jpg'
+import p04 from '@/assets/products/04.jpg'
+import p05 from '@/assets/products/05.jpg'
+import p06 from '@/assets/products/06.jpg'
+import p07 from '@/assets/products/07.jpg'
+import p08 from '@/assets/products/08.jpg'
+
 type Lang = 'ru' | 'en' | 'zh'
 
 const t: Record<Lang, {
@@ -230,15 +240,22 @@ export default function Home() {
             <h2 style={{ fontSize: 'clamp(28px, 4vw, 42px)', fontWeight: 200, color: '#fff', whiteSpace: 'pre-line' as const }}>{T.pl_h}</h2>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 1, background: '#1a1a1a' }}>
-            {T.products.map(([num, name, tag, desc]) => (
+            {T.products.map(([num, name, tag, desc], index) => (
               <div key={num} style={{ background: '#080808', padding: '28px 24px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
                   <span style={{ color: '#303030', fontSize: 11, fontFamily: 'monospace' }}>{num}</span>
                   <span style={{ color: '#404040', fontSize: 10, border: '1px solid #1a1a1a', padding: '2px 8px', borderRadius: 20, textTransform: 'uppercase' as const, letterSpacing: '0.08em' }}>{tag}</span>
                 </div>
-                <div style={{ width: '100%', height: 110, background: '#0a0a0a', border: '1px solid #141414', borderRadius: 6, marginBottom: 20, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <span style={{ color: '#1e1e1e', fontSize: 11, fontFamily: 'monospace' }}>[ image ]</span>
+                
+                {/* ← ИЗОБРАЖЕНИЕ ПРОДУКТА */}
+                <div style={{ width: '100%', height: 110, background: '#0a0a0a', border: '1px solid #141414', borderRadius: 6, marginBottom: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+                  <Image 
+                    src={[p01, p02, p03, p04, p05, p06, p07, p08][index]} 
+                    alt={name} 
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                  />
                 </div>
+                
                 <div style={{ color: '#e0e0e0', fontSize: 13, fontWeight: 400, marginBottom: 8 }}>{name}</div>
                 <div style={{ color: '#585858', fontSize: 12, lineHeight: 1.65, fontWeight: 300 }}>{desc}</div>
               </div>
