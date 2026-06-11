@@ -250,7 +250,7 @@ export default function Home() {
                 {/* ← ИЗОБРАЖЕНИЕ ПРОДУКТА */}
                 <div style={{ width: '100%', height: 110, background: '#0a0a0a', border: '1px solid #141414', borderRadius: 6, marginBottom: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
                   <Image 
-                    src={index === 0 ? p01 : null}
+                    src={index === 0 ? p01 : null} 
                     alt={name} 
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                   />
