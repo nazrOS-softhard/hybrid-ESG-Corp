@@ -6,7 +6,7 @@ import Image from 'next/image'
 import hybridLogo from '@/assets/hybrid-logo.svg'
 
 // ← ИМПОРТЫ ФОТО ПРОДУКТОВ
-import p01 from '@/assets/products/01.jpg'
+import p01 from '@/assets/products/01.png'
 // import p02 from '@/assets/products/02.jpg'
 // import p03 from '@/assets/products/03.jpg'
 // import p04 from '@/assets/products/04.jpg'
