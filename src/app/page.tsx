@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { WireframeCanvas } from '@/components/WireframeCanvas'
+import { WireframeWithVideoBackground } from '@/components/WireframeCanvas'
 
 type Lang = 'ru' | 'en' | 'zh'
 
