@@ -1,9 +1,15 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 
 export function WireframeWithVideoBackground() {
   const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 0.33 // ≈ 1/3
+    }
+  }, [])
 
   return (
     <video
