@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { WireframeWithVideoBackground } from '@/components/WireframeCanvas'
+import Image from 'next/image'
+import hybridLogo from '@/assets/hybrid-logo.svg'
 
 type Lang = 'ru' | 'en' | 'zh'
 
@@ -105,7 +107,7 @@ const t: Record<Lang, {
     ],
   },
   zh: {
-    corp: '企业集团', brand: 'HYBRID',
+    corp: '企业集团', brand: '海布里德',
     nav: ['产品', '事业部', '使命', '在途'],
     vputi_btn: '在途 →',
     eyebrow: '海布里德集团 · 始于 2024年',
@@ -167,7 +169,8 @@ export default function Home() {
       <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, borderBottom: '1px solid #1a1a1a', background: 'rgba(8,8,8,0.88)', backdropFilter: 'blur(16px)' }}>
         <div style={{ ...C, height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 30, height: 30, borderRadius: 7, background: teal, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, color: '#000', fontSize: 14, flexShrink: 0 }}>H</div>
+            {/* ← НАСТОЯЩИЙ ЛОГОТИП */}
+            <Image src={hybridLogo} alt="Hybrid" style={{ width: 30, height: 30 }} />
             <div style={{ lineHeight: 1.2 }}>
               <div style={{ color: '#505050', fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase' as const }}>{T.corp}</div>
               <div style={{ color: '#fff', fontSize: 12, fontWeight: 600, letterSpacing: '0.2em' }}>{T.brand}</div>
@@ -320,7 +323,8 @@ export default function Home() {
       <footer style={{ borderTop: '1px solid #1a1a1a', padding: '40px 0', position: 'relative', zIndex: 1 }}>
         <div style={{ ...C, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap' as const, gap: 16 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 20, height: 20, borderRadius: 4, background: teal, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, color: '#000', fontSize: 11 }}>H</div>
+            {/* ← ЛОГОТИП В ФУТЕРЕ ТОЖЕ */}
+            <Image src={hybridLogo} alt="Hybrid" style={{ width: 20, height: 20 }} />
             <div>
               <div style={{ color: '#303030', fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase' as const }}>{T.corp}</div>
               <div style={{ color: '#484848', fontSize: 11, letterSpacing: '0.15em' }}>{T.brand}</div>
