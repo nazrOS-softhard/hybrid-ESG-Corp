@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react'
 
 export function WireframeWithVideoBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -119,18 +120,45 @@ export function WireframeWithVideoBackground() {
   }, [])
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        zIndex: 0,
-        pointerEvents: 'none',
-        background: '#080808', // Цвет фона, как было
-      }}
-    />
+    <>
+      {/* Видео-слой на заднем плане */}
+      <video
+        ref={videoRef}
+        autoPlay
+        loop
+        muted
+        playsInline
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 0,
+          pointerEvents: 'none',
+          objectFit: 'cover',
+          opacity: 0.4,
+        }}
+      >
+        <source src="/wireframe-loop.mp4" type="video/mp4" />
+        {/* Если видео не загрузится — покажет чёрный фон */}
+        <div style={{ background: '#080808', width: '100%', height: '100%' }} />
+      </video>
+
+      {/* Canvas-сетка поверх видео */}
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 1,
+          pointerEvents: 'none',
+          background: 'transparent',
+        }}
+      />
+    </>
   )
 }
