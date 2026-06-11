@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { WireframeWithVideoBackground } from '@/components/WireframeCanvas'
 import Image from 'next/image'
 import hybridLogo from '@/assets/hybrid-logo.svg'
+import appPreview from '@/assets/app-preview.png'
 
 // ← ИМПОРТЫ ФОТО ПРОДУКТОВ
 import p01 from '@/assets/products/01.png'
@@ -316,36 +317,31 @@ export default function Home() {
       </section>
 
       {/* В ПУТИ */}
-      <section id="vputi" style={sec}>
-        <div style={{ ...C, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
-          <div>
-            <div style={{ color: teal, fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase' as const, marginBottom: 32 }}>{T.int_label}</div>
-            <h2 style={{ fontSize: 'clamp(28px, 4vw, 52px)', fontWeight: 200, color: '#fff', marginBottom: 24, lineHeight: 1.15 }}>
-              {T.vputi_h.split('\n')[0]}<br /><span style={{ color: teal }}>{T.vputi_h.split('\n')[1]}</span>
-            </h2>
-            <p style={{ color: '#585858', fontSize: 13, fontWeight: 300, lineHeight: 1.9, marginBottom: 8 }}>{T.vputi_p}</p>
-            <p style={{ color: '#383838', fontSize: 12, fontWeight: 300, lineHeight: 1.8, marginBottom: 40 }}>{T.vputi_sub}</p>
-            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' as const }}>
-              <a href="https://hybrid-away.vercel.app" target="_blank" rel="noopener noreferrer"
-                style={{ padding: '13px 28px', background: teal, color: '#000', borderRadius: 6, fontSize: 13, fontWeight: 600, textDecoration: 'none' }}>{T.open_app}</a>
-              <button disabled style={{ padding: '13px 28px', border: '1px solid #1a1a1a', color: '#383838', borderRadius: 6, fontSize: 13, background: 'transparent', cursor: 'not-allowed', fontWeight: 300 }}>{T.apk}</button>
-            </div>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'center', position: 'relative' as const }}>
-            <div style={{ width: 220, aspectRatio: '9/16', background: '#0a0a0a', border: '1px solid #1a1a1a', borderRadius: 24, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <div style={{ textAlign: 'center' as const }}>
-                <div style={{ width: 48, height: 48, borderRadius: 12, background: teal, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 18, color: '#000', margin: '0 auto 12px' }}>H</div>
-                <div style={{ color: '#fff', fontSize: 14, fontWeight: 300 }}>В Пути</div>
-                <div style={{ color: '#383838', fontSize: 11, marginTop: 6 }}>{T.app_preview}</div>
-              </div>
-            </div>
-            <div style={{ position: 'absolute' as const, top: -12, right: 24, padding: '5px 12px', borderRadius: 20, background: '#0a0a0a', border: `1px solid ${teal}`, color: teal, fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase' as const }}>
-              {T.internal}
-            </div>
-          </div>
-        </div>
-      </section>
-
+     <section id="vputi" style={sec}>
+  <div style={{ ...C, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
+    <div>
+      <div style={{ color: teal, fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase' as const, marginBottom: 32 }}>{T.int_label}</div>
+      <h2 style={{ fontSize: 'clamp(28px, 4vw, 52px)', fontWeight: 200, color: '#fff', marginBottom: 24, lineHeight: 1.15 }}>
+        {T.vputi_h.split('\n')[0]}<br /><span style={{ color: teal }}>{T.vputi_h.split('\n')[1]}</span>
+      </h2>
+      <p style={{ color: '#585858', fontSize: 13, fontWeight: 300, lineHeight: 1.9, marginBottom: 8 }}>{T.vputi_p}</p>
+      <p style={{ color: '#383838', fontSize: 12, fontWeight: 300, lineHeight: 1.8, marginBottom: 40 }}>{T.vputi_sub}</p>
+      <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' as const }}>
+        <a href="https://hybrid-away.vercel.app" target="_blank" rel="noopener noreferrer"
+          style={{ padding: '13px 28px', background: teal, color: '#000', borderRadius: 6, fontSize: 13, fontWeight: 600, textDecoration: 'none' }}>{T.open_app}</a>
+        <button disabled style={{ padding: '13px 28px', border: '1px solid #1a1a1a', color: '#383838', borderRadius: 6, fontSize: 13, background: 'transparent', cursor: 'not-allowed', fontWeight: 300 }}>{T.apk}</button>
+      </div>
+    </div>
+    <div style={{ display: 'flex', justifyContent: 'center', position: 'relative' as const }}>
+      <div style={{ width: 220, aspectRatio: '9/16', background: '#0a0a0a', border: '1px solid #1a1a1a', borderRadius: 24, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+        <Image src={appPreview} alt={T.app_preview} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+      </div>
+      <div style={{ position: 'absolute' as const, top: -12, right: 24, padding: '5px 12px', borderRadius: 20, background: '#0a0a0a', border: `1px solid ${teal}`, color: teal, fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase' as const }}>
+        {T.internal}
+      </div>
+    </div>
+  </div>
+</section>
       {/* FOOTER */}
       <footer style={{ borderTop: '1px solid #1a1a1a', padding: '40px 0', position: 'relative', zIndex: 1 }}>
         <div style={{ ...C, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap' as const, gap: 16 }}>
