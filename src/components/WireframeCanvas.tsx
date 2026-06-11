@@ -2,8 +2,9 @@
 
 import { useEffect, useRef } from 'react'
 
-export function WireframeCanvas() {
+export function WireframeWithVideoBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -16,7 +17,7 @@ export function WireframeCanvas() {
 
     const COLS = 40
     const ROWS = 25
-    const FOV = 800 // Увеличили для более плоской, "технической" перспективы
+    const FOV = 800
 
     function resize() {
       canvas!.width = window.innerWidth
@@ -25,7 +26,6 @@ export function WireframeCanvas() {
     resize()
     window.addEventListener('resize', resize)
 
-    // Упрощенная функция высоты для более стабильной "цифровой" сетки
     function height(xi: number, zi: number, t: number): number {
       const nx = xi / COLS
       const nz = zi / ROWS
@@ -44,7 +44,7 @@ export function WireframeCanvas() {
       const scale = FOV / dz
       return {
         x: W * 0.5 + wx * scale,
-        y: H * 0.35 - wy * scale, // Сдвинули камеру выше
+        y: H * 0.35 - wy * scale,
         scale,
         depth: wz / ROWS,
       }
@@ -56,29 +56,23 @@ export function WireframeCanvas() {
       ctx!.clearRect(0, 0, W, H)
       time += 0.005
 
-    // 1. Обновляем тип данных, которые мы храним в pts
-const pts: ({ x: number; y: number; wy: number } | null)[][] = []
+      const pts: ({ x: number; y: number; wy: number } | null)[][] = []
 
-for (let zi = 0; zi <= ROWS; zi++) {
-  pts[zi] = []
-  for (let xi = 0; xi <= COLS; xi++) {
-    const wx = (xi / COLS - 0.5) * W * 1.2
-    const wy = height(xi, zi, time)
-    
-    // 2. Получаем результат проекции
-    const projected = project(wx, wy, zi)
-    
-    // 3. Сохраняем объект, включая wy (высоту), чтобы TypeScript был доволен
-    pts[zi][xi] = projected ? { x: projected.x, y: projected.y, wy: wy } : null
-  }
-}
+      for (let zi = 0; zi <= ROWS; zi++) {
+        pts[zi] = []
+        for (let xi = 0; xi <= COLS; xi++) {
+          const wx = (xi / COLS - 0.5) * W * 1.2
+          const wy = height(xi, zi, time)
+          const projected = project(wx, wy, zi)
+          pts[zi][xi] = projected ? { x: projected.x, y: projected.y, wy } : null
+        }
+      }
 
-      // Настройка цвета бренда: #00D4B4
       const strokeStyle = 'rgba(0, 212, 180, 0.3)'
       ctx!.strokeStyle = strokeStyle
       ctx!.lineWidth = 0.5
 
-      // Отрисовка сетки
+      // Сетка по горизонтали
       for (let zi = 0; zi <= ROWS; zi++) {
         ctx!.beginPath()
         for (let xi = 0; xi <= COLS; xi++) {
@@ -90,6 +84,7 @@ for (let zi = 0; zi <= ROWS; zi++) {
         ctx!.stroke()
       }
 
+      // Сетка по вертикали
       for (let xi = 0; xi <= COLS; xi++) {
         ctx!.beginPath()
         for (let zi = 0; zi <= ROWS; zi++) {
@@ -101,7 +96,7 @@ for (let zi = 0; zi <= ROWS; zi++) {
         ctx!.stroke()
       }
 
-      // Точки узлов (акценты)
+      // Точки узлов
       ctx!.fillStyle = '#00D4B4'
       for (let zi = 0; zi <= ROWS; zi += 3) {
         for (let xi = 0; xi <= COLS; xi += 3) {
@@ -125,18 +120,43 @@ for (let zi = 0; zi <= ROWS; zi++) {
   }, [])
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        zIndex: 0,
-        pointerEvents: 'none',
-        background: '#080808', // Цвет фона из вашего дизайна
-      }}
-    />
+    <>
+      {/* Видео-слой на заднем плане */}
+      <video
+        ref={videoRef}
+        autoPlay
+        loop
+        muted
+        playsInline
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 0,
+          pointerEvents: 'none',
+          objectFit: 'cover',
+          opacity: 0.4, // Прозрачность видео (чтобы сетка была видна)
+        }}
+      >
+        <source src="/wireframe-loop.mp4" type="video/mp4" />
+      </video>
+
+      {/* Canvas-сетка поверх видео */}
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 1, // Выше видео
+          pointerEvents: 'none',
+          background: 'transparent', // Прозрачный фон
+        }}
+      />
+    </>
   )
 }
