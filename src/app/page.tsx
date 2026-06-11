@@ -161,7 +161,7 @@ export default function Home() {
 
   return (
     <main style={{ background: '#080808', color: '#e8e8e8', fontFamily: 'Inter, system-ui, sans-serif', overflowX: 'hidden' }}>
-      <WireframeCanvas />
+      <WireframeWithVideoBackground />
 
       {/* NAV */}
       <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, borderBottom: '1px solid #1a1a1a', background: 'rgba(8,8,8,0.88)', backdropFilter: 'blur(16px)' }}>
