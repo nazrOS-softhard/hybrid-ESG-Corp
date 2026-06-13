@@ -8,7 +8,7 @@ import appPreview from '@/assets/app-preview.png'
 
 // ← ИМПОРТЫ ФОТО ПРОДУКТОВ
 import p01 from '@/assets/products/01.png'
-// import p02 from '@/assets/products/02.jpg'
+import p02 from '@/assets/products/02.png'
 // import p03 from '@/assets/products/03.jpg'
 // import p04 from '@/assets/products/04.jpg'
 // import p05 from '@/assets/products/05.jpg'
@@ -250,22 +250,27 @@ export default function Home() {
                 
                 {/* ← ИЗОБРАЖЕНИЕ ПРОДУКТА */}
                 <div style={{ width: '100%', height: 110, background: '#0a0a0a', border: '1px solid #141414', borderRadius: 6, marginBottom: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-                  {index === 0 ? (
-                    <Image 
-                      src={p01} 
-                      alt={name} 
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-                    />
-                  ) : (
-                    <div style={{ 
-                      width: '100%', height: '100%', 
-                      background: `hsl(${index * 45}, 50%, 15%)`, 
-                      display: 'flex', alignItems: 'center', justifyContent: 'center' 
-                    }}>
-                      <span style={{ color: '#404040', fontSize: 10, fontFamily: 'monospace' }}>{name}</span>
-                    </div>
-                  )}
-                </div>
+           {index === 0 ? (
+  <Image 
+    src={p01} 
+    alt={name} 
+    style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+  />
+) : index === 1 ? (
+  <Image 
+    src={p02} 
+    alt={name} 
+    style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+  />
+) : (
+  <div style={{ 
+    width: '100%', height: '100%', 
+    background: `hsl(${index * 45}, 50%, 15%)`, 
+    display: 'flex', alignItems: 'center', justifyContent: 'center' 
+  }}>
+    <span style={{ color: '#404040', fontSize: 10, fontFamily: 'monospace' }}>{name}</span>
+  </div>
+)}
                 
                 <div style={{ color: '#e0e0e0', fontSize: 13, fontWeight: 400, marginBottom: 8 }}>{name}</div>
                 <div style={{ color: '#585858', fontSize: 12, lineHeight: 1.65, fontWeight: 300 }}>{desc}</div>
